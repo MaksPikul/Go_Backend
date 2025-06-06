@@ -1,0 +1,37 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Output of the go build command
+/build/
+/bin/
+/out/
+
+# Vendor directory (if not using Go modules vendoring)
+vendor/
+
+# Go test cache
+*.coverprofile
+*.test
+
+# IDE/editor-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Dependency lock file (optional — only if you don't want to commit it)
+# go.sum
+
+# Private configuration
+.env
+*.local.*
