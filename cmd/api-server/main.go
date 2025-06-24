@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"go_backend/internal/config"
+	rds "go_backend/internal/storage/RDS"
 	"log/slog"
 	"os"
 
@@ -29,6 +30,15 @@ func main() {
 		slog.Error("fatal error: failed to load config", slog.Any("error", err))
 		os.Exit(1)
 	}
+
+	RDB, err := rds.ConnectToDB(cfg.RDB)
+
+	// S3 for Images, SQL for users and post metadata???
+
+	// Start Repo
+	// Start Handlers
+
+	//Start Server
 
 }
 

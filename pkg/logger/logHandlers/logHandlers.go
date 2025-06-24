@@ -2,6 +2,7 @@ package logHandlers
 
 import (
 	"fmt"
+	"go_backend/internal/util"
 	"log/slog"
 	"os"
 
@@ -40,7 +41,7 @@ func FileProvider() HandlerProvider {
 
 func CloudWatchProvider() HandlerProvider {
 	return func(config *HandlerConfig) (slog.Handler, error) {
-		if os.Getenv("ENV") != "prod" {
+		if !util.IsProd() {
 			return nil, nil
 		}
 
