@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"go_backend/internal/config"
+	repositories "go_backend/internal/data/Repositories"
 	rds "go_backend/internal/storage/RDS"
 	"log/slog"
 	"os"
@@ -31,15 +32,19 @@ func main() {
 		os.Exit(1)
 	}
 
-	RDB, err := rds.ConnectToDB(cfg.RDB)
+	db, err := rds.ConnectToDB(cfg.RDB)
+	// check for error
 
-	// S3 for Images, SQL for users and post metadata???
+	repos := repositories.NewRepositories(db)
 
-	// Start Repo
+	// Cache might only be required when getting user sessions
+	// will use cache for rate limiting
+	// Cache, err := cache.ConnectToCache()
+	// Decorate Repo with Cache
+
 	// Start Handlers
 
 	//Start Server
-
 }
 
 func homePage(c *gin.Context) {

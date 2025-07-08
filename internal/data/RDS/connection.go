@@ -13,6 +13,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// either connects to docker
+// or RDB proxy pool
 func ConnectToDB(
 	RDB *config.RDBConfig,
 	// AWS_RDB *config.AwsRdbConfig,

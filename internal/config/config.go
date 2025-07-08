@@ -6,7 +6,8 @@ import (
 )
 
 type Config struct {
-	RDB *RDBConfig
+	RDB   *RDBConfig
+	Cache *CacheConfig
 	//AWS *AWSConfig
 }
 
@@ -39,6 +40,13 @@ func loadDBConfig() *RDBConfig {
 	}
 }
 
+type CacheConfig struct {
+}
+
+func loadCacheConfig() *CacheConfig {
+
+}
+
 type AWSConfig struct {
 }
 
@@ -46,8 +54,11 @@ func LoadConfig() (*Config, error) {
 
 	dbCfg := loadDBConfig()
 
+	cacheCfg := loadCacheConfig()
+
 	return &Config{
-		RDB: dbCfg,
+		RDB:   dbCfg,
+		Cache: cacheCfg,
 	}, nil
 }
 
