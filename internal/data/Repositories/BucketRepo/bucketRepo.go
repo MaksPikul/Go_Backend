@@ -4,7 +4,7 @@ import (
 	bucket "go_backend/internal/data/Bucket"
 )
 
-type BucketInterface interface {
+type IBucketRepo interface {
 	// UploadContent (*models.User) error
 	// PreSignUrl_UploadContent
 	// DeleteContent ()

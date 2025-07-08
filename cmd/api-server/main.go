@@ -5,6 +5,7 @@ import (
 	"go_backend/internal/config"
 	bucket "go_backend/internal/data/Bucket"
 	cache "go_backend/internal/data/Cache"
+	rds "go_backend/internal/data/RDS"
 	repositories "go_backend/internal/data/Repositories"
 	"log/slog"
 	"os"
@@ -39,6 +40,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	db, err := rds.GetDB(cfg.DB)
+
+	repos := repositories.NewRepositories(db, bucketUploader)
+
 	// Maybe Set Var that chooses wether to cache or not
 	cache, err := cache.GetCacheClient(cfg.Cloud)
 	if err != nil {
@@ -46,9 +51,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Create Decorator
-
-	repos := repositories.NewRepositories(bucketUploader)
+	wrappedRepos := repositories.NewWrappedRepos(repos, cache)
 
 	// Wrap repo with decorator
 
