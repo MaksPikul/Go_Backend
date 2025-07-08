@@ -6,24 +6,24 @@ import (
 )
 
 type Config struct {
-	RDB   *RDBConfig
+	DB    *DBConfig
 	Cache *CacheConfig
-	//AWS *AWSConfig
+	Cloud *CloudConfig
 }
 
-type RDBConfig struct {
+type DBConfig struct {
 	Endpoint string
 	Port     string
 	Username string
 	DbName   string
 }
 
-func loadDBConfig() *RDBConfig {
+func loadDBConfig() *DBConfig {
 
 	if util.IsProd() {
 
 		// AWS
-		return &RDBConfig{
+		return &DBConfig{
 			Endpoint: os.Getenv("AWS_RDS_PROXY_ENDPOINT"),
 			Port:     os.Getenv("AWS_RDS_PROXY_PORT"),
 			Username: os.Getenv("AWS_RDS_PROXY_USERNAME"),
@@ -32,7 +32,7 @@ func loadDBConfig() *RDBConfig {
 	}
 
 	// DOCKER
-	return &RDBConfig{
+	return &DBConfig{
 		Endpoint: os.Getenv("DOCKER_RDS_ENDPOINT"),
 		Port:     os.Getenv("DOCKER_RDS_PORT"),
 		Username: os.Getenv("DOCKER_RDS_USERNAME"),
@@ -47,18 +47,30 @@ func loadCacheConfig() *CacheConfig {
 
 }
 
-type AWSConfig struct {
+type CloudConfig struct {
+	Provider string
+	Region   string
+}
+
+func loadAWSConfig() *CloudConfig {
+	return &CloudConfig{
+		Provider: os.Getenv("CLOUD_PROVIDER"),
+		Region:   os.Getenv("CLOUD_REGION"),
+	}
 }
 
 func LoadConfig() (*Config, error) {
 
 	dbCfg := loadDBConfig()
 
+	cloudCfg := loadAWSConfig()
+
 	cacheCfg := loadCacheConfig()
 
 	return &Config{
-		RDB:   dbCfg,
+		DB:    dbCfg,
 		Cache: cacheCfg,
+		Cloud: cloudCfg,
 	}, nil
 }
 

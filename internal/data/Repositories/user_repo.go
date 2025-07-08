@@ -15,10 +15,3 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 		db: db,
 	}
 }
-
-// Create Account
-// Log in
-// validate session
-// withdraw session (if stateful)
-// log out (if stateful, or just expire token)
-// Refresh token (SHould token be one use only?)

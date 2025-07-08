@@ -7,16 +7,14 @@ import (
 	"go_backend/internal/config"
 
 	"github.com/aws-sdk-go-v2/feature/rds/auth"
-	"github.com/aws/aws-sdk-go-v2/config"
-	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 // either connects to docker
 // or RDB proxy pool
-func ConnectToDB(
-	RDB *config.RDBConfig,
+func GetDB(
+	RDB *config.DBConfig,
 	// AWS_RDB *config.AwsRdbConfig,
 ) (*gorm.DB, error) {
 
@@ -36,7 +34,7 @@ func ConnectToDB(
 }
 
 func buildAuthToken(
-	RDB *config.RDBConfig,
+	RDB *config.DBConfig,
 	// AWS_RDB *config.AwsRdbConfig,
 ) (string, error) {
 
@@ -45,7 +43,7 @@ func buildAuthToken(
 
 func createConString(
 	authToken string,
-	RDB *config.RDBConfig,
+	RDB *config.DBConfig,
 	// AWS_RDB *config.AwsRdbConfig,
 ) string {
 	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=require",

@@ -1,13 +1,17 @@
 package repositories
 
-import "database/sql"
+import (
+	bucket "go_backend/internal/data/Bucket"
+)
 
 type Repositories struct {
-	UserRepository *UserRepository
+	bucketRepository *BucketRepository
 }
 
-func NewRepositories(db *sql.DB) *Repositories {
+func NewRepositories(
+	uploader *bucket.IBucketUploader,
+) *Repositories {
 	return &Repositories{
-		UserRepository: NewUserRepository(db),
+		bucketRepository: NewBucketRepository(uploader),
 	}
 }

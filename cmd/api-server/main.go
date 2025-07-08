@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"go_backend/internal/config"
+	bucket "go_backend/internal/data/Bucket"
+	cache "go_backend/internal/data/Cache"
 	repositories "go_backend/internal/data/Repositories"
-	rds "go_backend/internal/storage/RDS"
 	"log/slog"
 	"os"
 
@@ -32,19 +33,28 @@ func main() {
 		os.Exit(1)
 	}
 
-	db, err := rds.ConnectToDB(cfg.RDB)
-	// check for error
+	bucketUploader, err := bucket.GetBucketUploader(cfg.Cloud)
+	if err != nil {
+		slog.Error("fatal error: failed to initialise bucket loader", slog.Any("error", err))
+		os.Exit(1)
+	}
 
-	repos := repositories.NewRepositories(db)
+	// Maybe Set Var that chooses wether to cache or not
+	cache, err := cache.GetCacheClient(cfg.Cloud)
+	if err != nil {
+		slog.Error("fatal error: failed to initialise cache client", slog.Any("error", err))
+		os.Exit(1)
+	}
 
-	// Cache might only be required when getting user sessions
-	// will use cache for rate limiting
-	// Cache, err := cache.ConnectToCache()
-	// Decorate Repo with Cache
+	// Create Decorator
+
+	repos := repositories.NewRepositories(bucketUploader)
+
+	// Wrap repo with decorator
 
 	// Start Handlers
 
-	//Start Server
+	// Start Server
 }
 
 func homePage(c *gin.Context) {
@@ -101,3 +111,6 @@ func (s *Server) Run() error {
 	return s.router.Run(":" + s.cfg.Port)
 }
 */
+
+// might not need, might need in User Service
+//DB, err := rds.GetDB(cfg.DB)
